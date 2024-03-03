@@ -2,13 +2,14 @@ import React from "react";
 import store from "../store/store";
 import sandboxSlice from "../store/slices/sandbox";
 import {TDragInterface} from "../Types/TDragInterface";
+import {LineManager} from "./LineManager";
 
 export class SandboxManager {
     public static _handleDropElement(event: React.DragEvent) {
         event.stopPropagation();
         event.preventDefault();
         const element: TDragInterface = JSON.parse(event.dataTransfer.getData("text"));
-        const sandboxElements = store.getState().sandbox?.elements;
+        const sandboxElements = store.getState().sandboxSlice?.elements;
         let listCopy = [...sandboxElements];
 
         const calcLeft = event.clientX;
@@ -36,10 +37,12 @@ export class SandboxManager {
             }
         }
         store.dispatch(sandboxSlice.actions.setSandboxElements(listCopy));
+        LineManager._recalculateLines()
+
     }
 
     public static _removeFromSandbox(eventData: any) {
-        const copyList = [...store.getState().sandbox?.elements];
+        const copyList = [...store.getState().sandboxSlice?.elements];
         const findIndex = copyList.findIndex(listElement => listElement.elementString === eventData.elementString)
         if(findIndex !== -1){
             copyList.splice(findIndex,1)

@@ -1,19 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Logo from "./Logo";
 import TagElement from "./TagElement";
 import Settings from "./Settings";
 import {useSelector} from "react-redux";
 import store from "../store/store";
 import {SandboxManager} from "../Managers/SandboxManager";
+import {LineManager} from "../Managers/LineManager";
+import DrawSandboxTags from "./DrawSandboxTags";
+import DrawLines from "./DrawLines";
 
-type PositionInterface = {
-    top: number,
-    left: number,
-    elementString: string
-}
+
 const Sandbox = () => {
 
-    const elements = useSelector(() => store.getState().sandbox?.elements);
+    const [lineList, setLineList] = useState<any[]>();
+
+    useEffect(() => {
+        setLineList(LineManager._calculateLineList())
+    }, []);
 
     return (
         <div
@@ -23,19 +26,8 @@ const Sandbox = () => {
             <div className={"absolute top-2 left-2 "}>
                 <Logo/>
             </div>
-            {
-                elements.map(({elementString, left, top,}, index) => {
-                    return (
-                        <div key={index} className={"absolute"}
-                             style={{
-                                 top: top,
-                                 left: left
-                             }}>
-                            <TagElement elementString={elementString} inSandbox={true}/>
-                        </div>
-                    );
-                })
-            }
+            <DrawSandboxTags/>
+            <DrawLines/>
             <div className={"absolute bottom-2 right-2"}>
                 <Settings/>
             </div>

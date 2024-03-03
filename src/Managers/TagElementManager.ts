@@ -1,11 +1,10 @@
 import React from "react";
 import {TDragInterface} from "../Types/TDragInterface";
-import {TSandboxElement} from "../Types/TSandboxElement";
 import {AIManager} from "./AIManager";
 import store from "../store/store";
-import {Simulate} from "react-dom/test-utils";
-import copy = Simulate.copy;
 import sandboxSlice from "../store/slices/sandbox";
+import {TagListManager} from "./TaglistManager";
+import {LineManager} from "./LineManager";
 
 export class TagElementManager {
     public static _handleTagStart({event, draggedElement, inSandbox, elementString}: TDragInterface) {
@@ -32,21 +31,24 @@ export class TagElementManager {
      */
     public static async _handleTagMerge(dragData: React.DragEvent, secondElementString: string) {
         const stringifyDragData = JSON.parse(dragData?.dataTransfer?.getData("text"));
-        const dropPosition = {x: dragData.clientX, y: dragData.clientY};
-        const copyList = [...store.getState().sandbox?.elements];
+        const copyList = [...store.getState().sandboxSlice?.elements];
+
+        const findFirstElementIndex = copyList.findIndex(listElement => listElement.elementString === stringifyDragData.elementString);
+        const findSecondsElementIndex = copyList.findIndex(listElement => listElement.elementString === secondElementString);
+        copyList.splice(findFirstElementIndex, 1);
+        copyList.splice(findSecondsElementIndex, 1);
 
         const newAIResponse = await AIManager._generateNewTag(stringifyDragData.elementString, secondElementString);
         if (newAIResponse) {
-            const findFirstElementIndex = copyList.findIndex(listElement => listElement.elementString === stringifyDragData.elementString)
-            const findSecondsElementIndex = copyList.findIndex(listElement => listElement.elementString === secondElementString)
-            copyList.splice(findFirstElementIndex, 1)
-            copyList.splice(findSecondsElementIndex, 1)
             copyList.push({
-                elementString:newAIResponse,
-                left: dragData.clientX,
+                elementString: newAIResponse,
+                left: dragData.clientX - 20,
                 top: dragData.clientY
-            })
+            });
         }
-        store.dispatch(sandboxSlice.actions.setSandboxElements(copyList))
+        store.dispatch(sandboxSlice.actions.setSandboxElements(copyList));
+        LineManager._recalculateLines()
+        TagListManager._addNewTag(newAIResponse)
+
     }
 }
