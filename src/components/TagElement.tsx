@@ -30,8 +30,8 @@ const TagElement = ({elementString, inSandbox}: TagElementProps) => {
             draggable={true}
             onDrop={(e) =>handleDrop (e)}
             onDragOver={e => e.preventDefault()}
-            style={{zIndex:"50"}}
-            className={"border-[1px] py-2 border-neutral-200 rounded-md bg-red-200 px-2 "}>
+            style={{zIndex:50}}
+            className={"border-[1px] py-2 border-neutral-200 rounded-md bg-white px-2 "}>
             <span className={"capitalize font-bold"}>{elementString}</span>
         </div>
     );

@@ -7,7 +7,7 @@ const DrawSandboxTags = () => {
     const elements = useSelector(() => store.getState().sandboxSlice?.elements);
 
     return (
-        <>
+        <div className={"z-50"}>
             {
                 elements.map(({elementString, left, top}, index: number) => {
                     return (
@@ -21,7 +21,7 @@ const DrawSandboxTags = () => {
                     );
                 })
             }
-        </>
+        </div>
     );
 };
 
