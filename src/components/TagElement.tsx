@@ -18,11 +18,18 @@ const TagElement = ({elementString, inSandbox}: TagElementProps) => {
         })
     };
 
+    const handleDrop = (e: React.DragEvent) => {
+        if(inSandbox){
+            TagElementManager._handleTagMerge(e, elementString)
+        }
+    }
 
     return (
         <div
             onDragStart={(e) => handleDragStart(e)}
             draggable={true}
+            onDrop={(e) =>handleDrop (e)}
+            onDragOver={e => e.preventDefault()}
             className={"border-[1px] border-neutral-200 rounded-md bg-white px-2 z-20"}>
             <span className={"capitalize font-bold"}>{elementString}</span>
         </div>
