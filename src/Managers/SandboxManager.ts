@@ -9,17 +9,42 @@ export class SandboxManager {
         event.preventDefault();
         const element: TDragInterface = JSON.parse(event.dataTransfer.getData("text"));
         const sandboxElements = store.getState().sandbox?.elements;
-        const listCopy = [...sandboxElements];
-
-        // const rect = event.currentTarget.getBoundingClientRect();
-
-        // const calcLeft = rect.left + window.scrollX;
-        // const calcTop = rect.top + window.scrollY;
+        let listCopy = [...sandboxElements];
 
         const calcLeft = event.clientX;
         const calcTop = event.clientY;
 
-        listCopy.push({top: calcTop, left: calcLeft, elementString: element.elementString});
+        if (element.inSandbox) {
+            const findIndex = listCopy.findIndex(listElement => listElement.elementString === element.elementString);
+            if (findIndex !== -1) {
+                const updatedElement = {
+                    ...listCopy[findIndex],
+                    left: calcLeft,
+                    top: calcTop
+                };
+
+                listCopy = [
+                    ...listCopy.slice(0, findIndex),
+                    updatedElement,
+                    ...listCopy.slice(findIndex + 1)
+                ];
+            }
+        } else {
+            const elementAlreadyInSandbox = listCopy.some(listElement => listElement.elementString === element.elementString);
+            if (!elementAlreadyInSandbox) {
+                listCopy.push({top: calcTop, left: calcLeft, elementString: element.elementString});
+            }
+        }
         store.dispatch(sandboxSlice.actions.setSandboxElements(listCopy));
+    }
+
+    public static _removeFromSandbox(eventData: any) {
+        const copyList = [...store.getState().sandbox?.elements];
+        const findIndex = copyList.findIndex(listElement => listElement.elementString === eventData.elementString)
+        if(findIndex !== -1){
+            copyList.splice(findIndex,1)
+        }
+
+        store.dispatch(sandboxSlice.actions.setSandboxElements(copyList))
     }
 }
