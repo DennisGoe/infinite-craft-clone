@@ -8,6 +8,7 @@ import {SandboxManager} from "../Managers/SandboxManager";
 import {LineManager} from "../Managers/LineManager";
 import DrawSandboxTags from "./DrawSandboxTags";
 import DrawLines from "./DrawLines";
+import MergingSpinner from "./MergingSpinner";
 
 
 const Sandbox = () => {
@@ -28,6 +29,7 @@ const Sandbox = () => {
             </div>
             <DrawSandboxTags/>
             <DrawLines/>
+            <MergingSpinner/>
             <div className={"absolute bottom-2 right-2"}>
                 <Settings/>
             </div>

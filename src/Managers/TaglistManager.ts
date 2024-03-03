@@ -7,6 +7,7 @@ export class TagListManager{
     public static _handleDropOnTagList (event: React.DragEvent){
         const eventData = JSON.parse(event.dataTransfer.getData("text"))
         if(eventData.inSandbox){
+            console.log("removing", eventData);
             SandboxManager._removeFromSandbox(eventData)
         }
     }

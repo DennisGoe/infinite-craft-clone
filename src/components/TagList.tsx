@@ -10,7 +10,7 @@ const TagList = () => {
         <div
             onDrop={(e) => TagListManager._handleDropOnTagList(e)}
             onDragOver={(e) => e.preventDefault()}
-            className={"max-h-full w-full flex flex-wrap overflow-y-auto gap-x-2 items-start gap-y-2 p-3 items-start"}>
+            className={"max-h-full w-full flex flex-wrap overflow-y-auto gap-x-2 items-start z-[500] bg-white gap-y-2 p-3 items-start"}>
             {
                 tagList.map((elementString) => {
                     return (

@@ -2,11 +2,13 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {TSandboxElement} from "../../Types/TSandboxElement";
 
 type StateInterface = {
-    elements: TSandboxElement[]
+    elements: TSandboxElement[],
+    merging: boolean
 }
 
 const initialState: StateInterface= {
-    elements: []
+    elements: [],
+    merging: false
 }
 
 const sandboxSlice = createSlice({
@@ -15,6 +17,9 @@ const sandboxSlice = createSlice({
     reducers: {
         setSandboxElements (state, action: PayloadAction<TSandboxElement[]>){
             state.elements = action.payload
+        },
+        setMerging(state, action: PayloadAction<boolean>){
+            state.merging = action.payload
         }
     }
 });

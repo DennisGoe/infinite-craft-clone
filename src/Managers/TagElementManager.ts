@@ -30,6 +30,7 @@ export class TagElementManager {
      * @param dropData
      */
     public static async _handleTagMerge(dragData: React.DragEvent, secondElementString: string) {
+        store.dispatch(sandboxSlice.actions.setMerging(true));
         const stringifyDragData = JSON.parse(dragData?.dataTransfer?.getData("text"));
         const copyList = [...store.getState().sandboxSlice?.elements];
 
@@ -47,8 +48,14 @@ export class TagElementManager {
             });
         }
         store.dispatch(sandboxSlice.actions.setSandboxElements(copyList));
-        LineManager._recalculateLines()
-        TagListManager._addNewTag(newAIResponse)
 
+        this._finishMerging(newAIResponse);
+    }
+
+    private static _finishMerging(newTag: string | null) {
+        if(!newTag) return
+        LineManager._recalculateLines();
+        TagListManager._addNewTag(newTag);
+        store.dispatch(sandboxSlice.actions.setMerging(false));
     }
 }
