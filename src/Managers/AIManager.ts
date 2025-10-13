@@ -1,5 +1,6 @@
-import {openaiConfig} from "../openAIConfig/openAIConfig";
+
 import {openAICommand} from "../openAIConfig/openAICommand";
+import {openaiConfig} from "../openAIConfig/openaiConfig";
 
 export class AIManager {
     public static async _generateNewTag(firstTag: string, secondTag: string) {
