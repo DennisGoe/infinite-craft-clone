@@ -23,7 +23,7 @@ const Sandbox = () => {
         <div
             onDrop={(e) => SandboxManager._handleDropElement(e)}
             onDragOver={(e) => e.preventDefault()}
-            className={"w-full relative h-full border-r-[1px] border-neutral-300 items-start flex flex-wrap"}>
+            className={"w-full relative radialGrid h-full border-r-[1px] border-neutral-300 items-start flex flex-wrap"}>
             <div className={"absolute top-2 left-2 "}>
                 <Logo/>
             </div>
